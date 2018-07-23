@@ -1,4 +1,4 @@
-package lib
+package candlestick
 
 import (
 	"fmt"
@@ -33,17 +33,16 @@ type Result struct {
 	Candlesticks []Candlestick
 }
 
-func (data Candlestick) Load(d interface{}) {
+func (data Candlestick) Load(d interface{}, repo *Data) {
 	//var candlesticks Data
 	data.data = d
-	var candles Data
+
 	switch reflect.TypeOf(data.data).Kind() {
 	case reflect.Slice:
 		dataParsed := reflect.ValueOf(data.data)
 		numRows := dataParsed.Len()
 		//fmt.Println(dataParsed)
 		c := NewCandlestick(numRows)
-
 		for i := 0; i < numRows; i++ {
 			/*c.Date[i], _ = time.Parse("2006-01-02T15:04:05", dataParsed.Index(i).Time) //"2017-11-28T16:50:00"
 			c.Open[i] = dataParsed.Index(i)["Open"]
@@ -57,8 +56,10 @@ func (data Candlestick) Load(d interface{}) {
 			original := dd.Elem()
 			//fmt.Println(dd.Kind())
 			//fmt.Println(original.MapIndex(original.MapKeys()[1]))
-			for j := 0; j < 5; j++ {
-				key := original.MapKeys()[j]
+			keys := original.MapKeys()
+			for j := 0; j < 6; j++ {
+				key := keys[j]
+
 				val := original.MapIndex(key).Elem().String()
 				if strings.Compare(key.String(), "low") == 0 {
 					num, err := strconv.ParseFloat(val, 64)
@@ -92,20 +93,19 @@ func (data Candlestick) Load(d interface{}) {
 					if err != nil {
 						fmt.Println(err)
 					}
-					//fmt.Println("Volume: ", num)
+					//fmt.Println("Volume: ", nu:m,val)
 					c.Volume[i] = num
 				} else if strings.Compare(key.String(), "date") == 0 {
-					c.Date[i], _ = time.Parse("2006-01-02T15:04:05", val)
+					c.Date[i], _ = time.Parse("2006-01-02 15:04:05", val)
 				}
 			}
 		}
-		candles.Date = append(candles.Date, c.Date...)
-		candles.Open = append(candles.Open, c.Open...)
-		candles.High = append(candles.High, c.High...)
-		candles.Low = append(candles.Low, c.Low...)
-		candles.Close = append(candles.Close, c.Close...)
-		candles.Volume = append(candles.Volume, c.Volume...)
-		fmt.Println(candles.Volume)
+		repo.Date = append(repo.Date, c.Date...)
+		repo.Open = append(repo.Open, c.Open...)
+		repo.High = append(repo.High, c.High...)
+		repo.Low = append(repo.Low, c.Low...)
+		repo.Close = append(repo.Close, c.Close...)
+		repo.Volume = append(repo.Volume, c.Volume...)
 	}
 }
 func NewCandlestick(bars int) Data {
