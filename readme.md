@@ -1,2 +1,2 @@
 [![Coverage Status](https://coveralls.io/repos/github/Mague/candlestick/badge.svg)](https://coveralls.io/github/Mague/candlestick)
-[![Go Report Card](https://goreportcard.com/badge/github.com/Mague/candlestick)](https://goreportcard.com/badge/github.com/Mague/candlestick)
+[![Go Report Card](https://goreportcard.com/badge/github.com/Mague/candlestick)](https://goreportcard.com/report/github.com/Mague/candlestick)
