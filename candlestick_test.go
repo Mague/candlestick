@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
-	"reflect"
 	"testing"
 )
 
@@ -17,9 +16,12 @@ func TestLoad(t *testing.T) {
 		os.Exit(1)
 	}
 	var data interface{}
+
 	json.Unmarshal(file, &data)
 
-	candles := c.Load(data)
-	fmt.Println(reflect.TypeOf(candles).Kind())
-
+	var candlesF Data
+	c.Load(data, &candlesF)
+	if len(candlesF.Date) > 0 {
+		fmt.Println("Exito")
+	}
 }
